@@ -1,28 +1,29 @@
 package com.example.WebKartonApp.controller;
 
-import com.example.WebKartonApp.model.Product;
 import com.example.WebKartonApp.service.ProductService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.Data;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
-@RestController
+@Data
+@Controller
 @RequestMapping("/api/v1/product")
 public class ProductController {
-    private final ProductService productService;
-@Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
-    @GetMapping
-    public ResponseEntity<?> getAllProducts() {
-        List<Product> products = productService.findAll();
 
-        return new ResponseEntity<>(products, HttpStatus.OK);
+    private final ProductService productService;
+
+    @GetMapping
+    public String getAllProducts(Model model) {
+        model.addAttribute("products", productService.findAll());
+        return "catalog";
+    }
+
+    @GetMapping("/{id}")
+    public String getById(@PathVariable long id, Model model) {
+        model.addAttribute("product", productService.getOne(id));
+        return "product";
     }
 }

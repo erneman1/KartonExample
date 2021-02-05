@@ -15,7 +15,7 @@ price float8 not null,
 product_category varchar(255),
 sub_category varchar(255),
 product_color varchar(255),
-product_description varchar(255),
+product_description varchar(2048),
 product_name varchar(255),
 quantity varchar(255),
 primary key (id));
